@@ -1,4 +1,5 @@
 **/.ipynb_checkpoints/
 *.pyc
 **/.idea/
-customer_segmentation.csv
+*.csv
+*.json
