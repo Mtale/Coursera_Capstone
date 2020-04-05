@@ -1,9 +1,0 @@
-README.md
-setup.py
-ads_capstone_eurostat.egg-info/PKG-INFO
-ads_capstone_eurostat.egg-info/SOURCES.txt
-ads_capstone_eurostat.egg-info/dependency_links.txt
-ads_capstone_eurostat.egg-info/requires.txt
-ads_capstone_eurostat.egg-info/top_level.txt
-eurostat/__init__.py
-eurostat/germany.py
