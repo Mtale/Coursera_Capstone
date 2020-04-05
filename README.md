@@ -15,8 +15,6 @@ However, I hope you will find inspiration while trying it out!
 pip install git+git://github.com/Mtale/Coursera_Capstone.git
 ```
 
-pip install git+git://github.com/Mtale/Coursera_Capstone.git
-
 # Data sources used on the course
 
 Eurostat City Statistics - Cities and greater cities
