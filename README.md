@@ -8,7 +8,7 @@ The package is designed for this particular project and any use outside of the c
 However, I hope you will find inspiration while trying it out!
 
 # Installation
-1. Activate virtual envinronment
+1. Activate virtual environment
 2. Run the following on command line
 
 ```
