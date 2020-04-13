@@ -159,11 +159,12 @@ class Germany:
         self.dataset = None
         self.variable_codes = []
 
+    # Define api query
+    def define_api_query(self):
+
         # Create parameter list of variable codes for API query
         self.variable_list = ''.join(f'&indic_ur={var}' for var in self.variable_codes)
 
-    # Define api query
-    def define_api_query(self):
         self.api_query = self.url_constant_beginning + \
                           self.dataset + '?' + \
                           self.time_code_list + \
@@ -238,27 +239,6 @@ class Population_structure(Germany):
     def __init__(self):
         super().__init__()
         self.dataset = 'urb_cpopstr'
-        self.variable_codes = [
-            'DE1073V'
-            , 'DE1040I'
-            , 'DE1084I'
-            , 'DE1085I'
-            , 'DE1046I'
-            , 'DE1049I'
-            , 'DE1073I'
-            , 'DE1076I'
-            , 'DE1064I'
-            , 'DE1025I'
-            , 'DE1028I'
-            , 'DE1055I'
-            , 'DE1003I'
-            , 'DE1057I'
-            , 'DE1061I'
-            , 'DE1058I'
-            , 'DE1059I'
-            , 'DE1060I'
-        ]
-
         self.define_api_query()
         self.call_api()
 
