@@ -2,6 +2,7 @@ import overpy
 import requests
 import pandas as pd
 
+# https://worldpopulationreview.com/countries/germany-population/cities/
 top20_cities = {
     'Berlin': '62422'
     , 'Hamburg': '62782'
@@ -34,6 +35,7 @@ class OpenStreetMap:
         self.overpass_city_id = None
         self.api_response = None
         self.no_of_biergartens = None
+        self.df_biergartens = None
 
     def calc_overpass_city_id(self):
 
@@ -63,6 +65,8 @@ class OpenStreetMap:
 
         res_df['city'] = self.city_name
         res_df['city_id'] = self.city_id
+
+        self.df_biergartens = res_df
 
         self.no_of_biergartens = res_df.shape[0]
 
