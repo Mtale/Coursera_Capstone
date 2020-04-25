@@ -1,5 +1,8 @@
 import requests
 from pyjstat import pyjstat
+import pandas as pd
+
+from openstreetmap import openstreetmap
 
 
 class Germany:
@@ -179,12 +182,24 @@ class Germany:
             jstat_response = pyjstat.Dataset.read(self.api_query)
             self.api_query_result = jstat_response.write('dataframe')
 
-        except:
+        except Exception as ex:
             response = requests.get(self.api_query)
             self.api_query_result = response.status_code
             self.api_response_status = response.status_code
             print('Query completed with status code <> 200')
 
+    def transform_data(self):
+        try:
+            self.api_query_result = self.api_query_result[self.api_query_result['cities']
+                .isin(openstreetmap.top20_cities.keys())]
+            self.api_query_result = pd.pivot_table(self.api_query_result, index=['cities', 'time'],
+                                                   columns=['indic_ur'], values=['value']).reset_index()
+            col_list = list(self.api_query_result.columns.get_level_values(1))
+            col_list[0:2] = ['cities', 'time']
+            self.api_query_result.columns = col_list
+
+        except:
+            print('Data transformation failed')
 
 class Population_by_age_groups_and_sex(Germany):
 
@@ -232,6 +247,7 @@ class Population_by_age_groups_and_sex(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Population_structure(Germany):
@@ -241,6 +257,7 @@ class Population_structure(Germany):
         self.dataset = 'urb_cpopstr'
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Population_by_citizenship(Germany):
@@ -267,6 +284,7 @@ class Population_by_citizenship(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Fertility_and_mortality(Germany):
@@ -292,6 +310,7 @@ class Fertility_and_mortality(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Living_conditions(Germany):
@@ -343,6 +362,7 @@ class Living_conditions(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Education(Germany):
@@ -369,6 +389,7 @@ class Education(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Culture_and_tourism(Germany):
@@ -392,6 +413,7 @@ class Culture_and_tourism(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Labour_market(Germany):
@@ -442,6 +464,7 @@ class Labour_market(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Transport(Germany):
@@ -471,6 +494,7 @@ class Transport(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
 
 
 class Environment(Germany):
@@ -512,3 +536,4 @@ class Environment(Germany):
 
         self.define_api_query()
         self.call_api()
+        self.transform_data()
