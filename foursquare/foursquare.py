@@ -2,12 +2,13 @@ import time
 import numpy as np
 import requests
 import pandas as pd
+from tqdm import tqdm
 
 
 class Settings:
 
     version = 20180605
-    radius = 20
+    radius = 25
     limit = 100
 
     # Categories to search:
@@ -37,7 +38,7 @@ class Venues(Settings, Credentials):
 
         venues_list = []
 
-        for city, lat, lng in zip(city_list, latitudes, longitudes):
+        for city, lat, lng in tqdm(zip(city_list, latitudes, longitudes)):
 
             # create the API request URL
             url = 'https://api.foursquare.com/v2/venues/explore?&client_id={}&client_secret={}&v={}&ll={},{} \
@@ -93,7 +94,7 @@ class Reviews(Settings, Credentials):
 
         res_df = pd.DataFrame(columns=['venue_id', 'venue_name', 'rating', 'likes_cnt'])
 
-        for city, venue_id in zip(city_list, venue_id_list):
+        for city, venue_id in tqdm(zip(city_list, venue_id_list)):
 
             url = 'https://api.foursquare.com/v2/venues/{}?client_id={}&client_secret={}&v={}'.format(
                 venue_id,

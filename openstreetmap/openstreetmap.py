@@ -72,6 +72,8 @@ class OpenStreetMap:
 
         self.no_of_biergartens = res_df.shape[0]
 
+        print("Found " + str(self.no_of_biergartens) + " biergartens in " + self.city_name)
+
         return res_df
 
 
