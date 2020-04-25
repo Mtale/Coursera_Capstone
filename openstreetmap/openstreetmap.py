@@ -2,26 +2,47 @@ import overpy
 import requests
 import pandas as pd
 
+top20_cities = {
+    'Berlin': '62422'
+    , 'Hamburg': '62782'
+    , 'Munich': '62428'
+    , 'Koln': '62578'
+    , 'Frankfurt am Main': '62400'
+    , 'Essen': '62713'
+    , 'Stuttgart': '2793104'
+    , 'Dortmund': '1829065'
+    , 'Dusseldorf': '62539'
+    , 'Bremen': '62559'
+    , 'Hannover': '59418'
+    , 'Leipzig': '62649'
+    , 'Duisburg': '62456'
+    , 'Nurnberg': '62780'
+    , 'Dresden': '191645'
+    , 'Wandsbek': '30353'
+    , 'Bochum': '62644'
+    , 'Wuppertal': '62478'
+    , 'Bielefeld': '62646'
+    , 'Bonn': '62508'}
+
 
 class OpenStreetMap:
 
-    def __init__(self, city_name):
+    def __init__(self, city_name, city_id):
         self.overpass_api = overpy.Overpass()
         self.city_name = city_name
-        self.city_id = None
+        self.city_id = city_id
+        self.overpass_city_id = None
         self.api_response = None
         self.no_of_biergartens = None
 
-    def get_city_id(self):
-        response = requests.get(
-            'https://nominatim.openstreetmap.org/search?country=Germany&city=' + self.city_name + '&format=json').json()
+    def calc_overpass_city_id(self):
 
-        self.city_id = str(response[0]['osm_id'] + 3600000000)
+        self.overpass_city_id = str(int(self.city_id) + 3600000000)
 
     def overpass_query(self):
         self.api_response = self.overpass_api.query(
             "[out:json];"
-            "area(" + self.city_id + ")->.searchArea;"
+            "area(" + self.overpass_city_id + ")->.searchArea;"
                                      "("
                                      "node[amenity=biergarten](area.searchArea);"
                                      "way[amenity=biergarten](area.searchArea);"
@@ -32,7 +53,8 @@ class OpenStreetMap:
         )
 
     def get_biergartens_for_city(self):
-        self.get_city_id()
+
+        self.calc_overpass_city_id()
 
         self.overpass_query()
 
