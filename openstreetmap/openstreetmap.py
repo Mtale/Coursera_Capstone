@@ -6,24 +6,24 @@ import pandas as pd
 top20_cities = {
     'Berlin': '62422'
     , 'Hamburg': '62782'
-    , 'Munich': '62428'
-    , 'Koln': '62578'
+    , 'München': '62428'
+    , 'Köln': '62578'
     , 'Frankfurt am Main': '62400'
     , 'Essen': '62713'
     , 'Stuttgart': '2793104'
     , 'Dortmund': '1829065'
-    , 'Dusseldorf': '62539'
+    , 'Düsseldorf': '62539'
     , 'Bremen': '62559'
     , 'Hannover': '59418'
     , 'Leipzig': '62649'
     , 'Duisburg': '62456'
-    , 'Nurnberg': '62780'
+    , 'Nürnberg': '62780'
     , 'Dresden': '191645'
-    , 'Wandsbek': '30353'
     , 'Bochum': '62644'
     , 'Wuppertal': '62478'
     , 'Bielefeld': '62646'
-    , 'Bonn': '62508'}
+    , 'Bonn': '62508'
+    , 'Mannheim': '62691'}
 
 
 class OpenStreetMap:
@@ -55,6 +55,8 @@ class OpenStreetMap:
         )
 
     def get_biergartens_for_city(self):
+
+        print("Finding biergartens in " + self.city_name + '...')
 
         self.calc_overpass_city_id()
 
