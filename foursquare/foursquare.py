@@ -40,34 +40,44 @@ class Venues(Settings, Credentials):
 
         for city, lat, lng in tqdm(zip(city_list, latitudes, longitudes)):
 
-            # create the API request URL
-            url = 'https://api.foursquare.com/v2/venues/explore?&client_id={}&client_secret={}&v={}&ll={},{} \
-            &categoryId={}&radius={}&limit={}&intent=browse'.format(
-                self.client_id,
-                self.client_secret,
-                Settings.version,
-                lat,
-                lng,
-                Settings.category_list,
-                Settings.radius,
-                Settings.limit)
+            while True:
 
-            # make the GET request
-            results = requests.get(url).json()["response"]['groups'][0]['items']
+                try:
 
-            # return only relevant information for each nearby venue
-            venues_list.append([(
-                city,
-                lat,
-                lng,
-                v['venue']['id'],
-                v['venue']['name'],
-                v['venue']['location']['lat'],
-                v['venue']['location']['lng'],
-                v['venue']['categories'][0]['name']) for v in results])
+                    # create the API request URL
+                    url = 'https://api.foursquare.com/v2/venues/explore?&client_id={}&client_secret={}&v={}&ll={},{} \
+                    &categoryId={}&radius={}&limit={}&intent=browse'.format(
+                        self.client_id,
+                        self.client_secret,
+                        Settings.version,
+                        lat,
+                        lng,
+                        Settings.category_list,
+                        Settings.radius,
+                        Settings.limit)
 
-            # Sleep long enough to ensure compliance with Foursquare API guidelines
-            time.sleep(0.51)
+                    # make the GET request
+                    results = requests.get(url).json()["response"]['groups'][0]['items']
+
+                    # return only relevant information for each nearby venue
+                    venues_list.append([(
+                        city,
+                        lat,
+                        lng,
+                        v['venue']['id'],
+                        v['venue']['name'],
+                        v['venue']['location']['lat'],
+                        v['venue']['location']['lng'],
+                        v['venue']['categories'][0]['name']) for v in results])
+
+                    # Sleep long enough to ensure compliance with Foursquare API guidelines
+                    time.sleep(0.51)
+
+                except:
+                    time.sleep(0.51)
+                    continue
+
+                break
 
         nearby_venues = pd.DataFrame([item for venue_list in venues_list for item in venue_list])
         nearby_venues.columns = ['City',
@@ -96,27 +106,40 @@ class Reviews(Settings, Credentials):
 
         for city, venue_id in tqdm(zip(city_list, venue_id_list)):
 
-            url = 'https://api.foursquare.com/v2/venues/{}?client_id={}&client_secret={}&v={}'.format(
-                venue_id,
-                self.client_id,
-                self.client_secret,
-                Settings.version)
+            while True:
 
-            response = requests.get(url).json()
+                try:
 
-            d = {
-                'city': city,
-                'venue_id': venue_id,
-                'venue_name': response['response']['venue'].get('name'),
-                'rating': response['response']['venue'].get('rating'),
-            }
+                    url = 'https://api.foursquare.com/v2/venues/{}?client_id={}&client_secret={}&v={}'.format(
+                        venue_id,
+                        self.client_id,
+                        self.client_secret,
+                        Settings.version)
 
-            if response['response']['venue']['likes']:
-                d['likes_cnt'] = response['response']['venue']['likes'].get('count')
-            else:
-                d['likes_cnt'] = np.NaN
+                    response = requests.get(url).json()
 
-            res_df = res_df.append(d, ignore_index=True)
+                    d = {
+                        'city': city,
+                        'venue_id': venue_id,
+                        'venue_name': response['response']['venue'].get('name'),
+                        'rating': response['response']['venue'].get('rating'),
+                    }
+
+                    if response['response']['venue']['likes']:
+                        d['likes_cnt'] = response['response']['venue']['likes'].get('count')
+                    else:
+                        d['likes_cnt'] = np.NaN
+
+                    res_df = res_df.append(d, ignore_index=True)
+
+                    # Sleep long enough to ensure compliance with Foursquare API guidelines
+                    time.sleep(0.51)
+
+                except:
+                    time.sleep(0.51)
+                    continue
+
+                break
 
         self.review_df = res_df
 
