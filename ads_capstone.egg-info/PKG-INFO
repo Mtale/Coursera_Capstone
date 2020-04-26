@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: ads-capstone
-Version: 0.0.1
+Version: 0.1.0
 Summary: Package to run most of the code behind the scenes instead of notebook
 Home-page: https://github.com/Mtale/Coursera_Capstone
 Author: Markku Leskinen
@@ -15,10 +15,36 @@ Description: # Applied Data Science Capstone
         The package is designed for this particular project and any use outside of the current scope is discouraged due to lack of testing for any other scenarios.
         However, I hope you will find inspiration while trying it out!
         
-        ## Data sources used on the course
+        # Installation
+        1. Activate virtual environment
+        2. Run the following on command line
         
+        ```
+        pip install git+git://github.com/Mtale/Coursera_Capstone.git
+        ```
+        
+        # Data sources used on the course
+        
+        ## Eurostat
         Eurostat City Statistics - Cities and greater cities
         https://ec.europa.eu/eurostat/web/cities/data/database
+        
+        ## Foursquare
+        Foursquare API
+        https://developer.foursquare.com/
+        
+        Note: Data collection includes 400+ Premium API calls. Hence, you need Personal tier developer account at Foursquare to repeat the analysis.
+        
+        ## OpenStreetMap
+        
+        Overpass API
+        https://wiki.openstreetmap.org/wiki/Overpass_API
+        http://overpass-turbo.eu/
+        
+        Nominatim
+        https://nominatim.openstreetmap.org/
+        
+         
         
         
         

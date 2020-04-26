@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ads-capstone",
-    version="0.0.1",
+    version="0.1.0",
     author="Markku Leskinen",
     author_email="mtlesk@gmail.com",
     description="Package to run most of the code behind the scenes instead of notebook",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Mtale/Coursera_Capstone",
     packages=setuptools.find_packages(),
-    install_requires=['pyjstat', 'requests'],
+    install_requires=['numpy','overpy','pandas','pyjstat','requests','tqdm'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

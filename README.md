@@ -17,7 +17,25 @@ pip install git+git://github.com/Mtale/Coursera_Capstone.git
 
 # Data sources used on the course
 
+## Eurostat
 Eurostat City Statistics - Cities and greater cities
 https://ec.europa.eu/eurostat/web/cities/data/database
+
+## Foursquare
+Foursquare API
+https://developer.foursquare.com/
+
+Note: Data collection includes 400+ Premium API calls. Hence, you need Personal tier developer account at Foursquare to repeat the analysis.
+
+## OpenStreetMap
+
+Overpass API
+https://wiki.openstreetmap.org/wiki/Overpass_API
+http://overpass-turbo.eu/
+
+Nominatim
+https://nominatim.openstreetmap.org/
+
+ 
 
 

@@ -7,3 +7,7 @@ ads_capstone.egg-info/requires.txt
 ads_capstone.egg-info/top_level.txt
 eurostat/__init__.py
 eurostat/germany.py
+foursquare/__init__.py
+foursquare/foursquare.py
+openstreetmap/__init__.py
+openstreetmap/openstreetmap.py

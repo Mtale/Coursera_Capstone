@@ -1,2 +1,6 @@
+numpy
+overpy
+pandas
 pyjstat
 requests
+tqdm
