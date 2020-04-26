@@ -6,6 +6,9 @@ from tqdm import tqdm
 
 
 class Settings:
+    """
+    Define some constants required in queries
+    """
 
     version = 20180605
     radius = 25
@@ -19,6 +22,9 @@ class Settings:
 
 
 class Credentials:
+    """
+    Define Credentials
+    """
 
     def __init__(self, client_id, client_secret):
 
@@ -27,6 +33,9 @@ class Credentials:
 
 
 class Venues(Settings, Credentials):
+    """
+    Class to get venues for a city by providing OpenStreetMap locations
+    """
 
     def __init__(self, client_id, client_secret):
         super().__init__(client_id, client_secret)
@@ -36,11 +45,17 @@ class Venues(Settings, Credentials):
 
         print("Matching biergartens in " + city_list[0] + ' to Foursquare venues...')
 
+        # Create empty list to collect venue data to
         venues_list = []
 
+        # Do for all the locations provided
         for city, lat, lng in tqdm(zip(city_list, latitudes, longitudes)):
 
+            # While loop to enable retrial if bad response
             while True:
+
+                # Init retrial counter
+                i = 0
 
                 try:
 
@@ -74,11 +89,20 @@ class Venues(Settings, Credentials):
                     time.sleep(0.51)
 
                 except:
+                    # Sleep long enough to ensure compliance with Foursquare API guidelines
                     time.sleep(0.51)
+
+                    # Add to retrial counter
+                    i += 1
+                    print('Retrial ' + str(i))
+
+                    # Get back to while loop = retrial
                     continue
 
+                # Break the while loop if successful
                 break
 
+        # Insert venue data into dataframe
         nearby_venues = pd.DataFrame([item for venue_list in venues_list for item in venue_list])
         nearby_venues.columns = ['City',
                                  'OSM Latitude',
@@ -89,10 +113,14 @@ class Venues(Settings, Credentials):
                                  'Venue Longitude',
                                  'Venue Category']
 
+        # Add result to class attribute
         self.venue_df = nearby_venues
 
 
 class Reviews(Settings, Credentials):
+    """
+    Class to get reviews for given list on venues
+    """
 
     def __init__(self, client_id, client_secret):
         super().__init__(client_id, client_secret)
@@ -102,14 +130,21 @@ class Reviews(Settings, Credentials):
 
         print("Fetching reviews for identified biergartens in " + city_list[0] + '...')
 
+        # Create empty result dataframe
         res_df = pd.DataFrame(columns=['venue_id', 'venue_name', 'rating', 'likes_cnt'])
 
+        # Do for all the venues
         for city, venue_id in tqdm(zip(city_list, venue_id_list)):
 
+            # While loop to enable retrial if bad response
             while True:
+
+                # Init retrial counter
+                i = 0
 
                 try:
 
+                    # Define API query
                     url = 'https://api.foursquare.com/v2/venues/{}?client_id={}&client_secret={}&v={}'.format(
                         venue_id,
                         self.client_id,
@@ -118,29 +153,39 @@ class Reviews(Settings, Credentials):
 
                     response = requests.get(url).json()
 
+                    # Collect necessary data from response to dict
                     d = {
                         'city': city,
                         'venue_id': venue_id,
                         'venue_name': response['response']['venue'].get('name'),
                         'rating': response['response']['venue'].get('rating'),
                     }
-
                     if response['response']['venue']['likes']:
                         d['likes_cnt'] = response['response']['venue']['likes'].get('count')
                     else:
                         d['likes_cnt'] = np.NaN
 
+                    # Append dict to dataframe
                     res_df = res_df.append(d, ignore_index=True)
 
                     # Sleep long enough to ensure compliance with Foursquare API guidelines
                     time.sleep(0.51)
 
                 except:
+                    # Sleep long enough to ensure compliance with Foursquare API guidelines
                     time.sleep(0.51)
+
+                    # Add to retrial counter
+                    i += 1
+                    print('Retrial ' + str(i))
+
+                    # Get back to while loop = retrial
                     continue
 
+                    # Break the while loop if successful
                 break
 
+        # Add result to class attribute
         self.review_df = res_df
 
         return self.review_df
