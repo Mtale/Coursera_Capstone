@@ -2,3 +2,5 @@
 *.pyc
 **/.idea/
 *.json
+customer_segmentation.csv
+Germany_biergartens.csv
